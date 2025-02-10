@@ -1,3 +1,4 @@
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 
 namespace Selu383.SP25.Api
@@ -6,14 +7,13 @@ namespace Selu383.SP25.Api
     {
         public static void Main(string[] args)
         {
+            Env.Load();
             var builder = WebApplication.CreateBuilder(args);
-
+            var connectionString = Env.GetString("CONNECTION_STRING");
             // Add services to the container.
             builder.Services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(
-                    "Server=tcp:cmps383-2025-sp-p0d-g06-sql.database.windows.net,1433;Initial Catalog=cmps383-2025-sp-p01-cmps383-2025-sp-p01-g06-db;Persist Security Info=False;User ID=cmps383-2025-sp-p0d;Password=group6!!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
-                );
+                options.UseSqlServer(connectionString);
             });
 
             builder.Services.AddControllers();

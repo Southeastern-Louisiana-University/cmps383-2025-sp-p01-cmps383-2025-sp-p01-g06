@@ -15,7 +15,7 @@ namespace Selu383.SP25.Api.Controllers
             _context = context;
         }
 
-        [HttpPost("CreateTheater")]
+        [HttpPost]
         public async Task<IActionResult> Create(CreateTheaterDto createDTO)
         {
             if (createDTO.SeatCount < 1)
@@ -25,7 +25,6 @@ namespace Selu383.SP25.Api.Controllers
 
             Theater newTheater = new Theater
             {
-                Id = Guid.NewGuid(),
                 Name = createDTO.Name,
                 Address = createDTO.Address,
                 SeatCount = createDTO.SeatCount,
@@ -35,7 +34,7 @@ namespace Selu383.SP25.Api.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(createDTO);
+            return CreatedAtAction(nameof(Create), new { id = newTheater.Id }, newTheater);
         }
     }
 }
