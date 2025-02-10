@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Selu383.SP25.Api.Entities
 {
@@ -23,7 +24,7 @@ public class CreateTheaterDto
 
 public class GetTheaterDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public int SeatCount { get; set; }
     public required string Address { get; set; }
@@ -31,7 +32,7 @@ public class GetTheaterDto
 
 public class GetTheaterByIdDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public int SeatCount { get; set; }
     public required string Address { get; set; }
@@ -47,5 +48,5 @@ public class UpdateTheaterDto
 
 public class DeleteTheaterDto
 {
-    public int Id { get; set; }
+    public GuidConverter Id { get; set; }
 }

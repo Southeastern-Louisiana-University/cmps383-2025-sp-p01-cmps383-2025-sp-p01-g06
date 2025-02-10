@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using Selu383.SP25.Api.Entities;
 
 namespace Selu383.SP25.Api.Controllers
