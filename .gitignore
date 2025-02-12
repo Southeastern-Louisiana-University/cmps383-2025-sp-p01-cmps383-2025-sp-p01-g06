@@ -8,6 +8,8 @@
 *.sln.docstates
 *ncrunch* 
 *.orig
+.env
+
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

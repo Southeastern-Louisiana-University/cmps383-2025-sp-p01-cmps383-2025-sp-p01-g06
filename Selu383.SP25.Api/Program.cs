@@ -1,3 +1,7 @@
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Selu383.SP25.Api
 {
@@ -5,9 +9,14 @@ namespace Selu383.SP25.Api
     {
         public static void Main(string[] args)
         {
+            Env.Load();
             var builder = WebApplication.CreateBuilder(args);
-
+            var connectionString = Env.GetString("CONNECTION_STRING");
             // Add services to the container.
+            builder.Services.AddDbContext<DataContext>(options =>
+            {
+                options.UseSqlServer(connectionString);
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -24,7 +33,6 @@ namespace Selu383.SP25.Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
