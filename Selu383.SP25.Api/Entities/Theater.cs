@@ -5,7 +5,7 @@ namespace Selu383.SP25.Api.Entities
 {
     public class Theater
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [MaxLength(120)]
         public required string Name { get; set; }
@@ -46,5 +46,5 @@ public class UpdateTheaterDto
 
 public class DeleteTheaterDto
 {
-    public GuidConverter Id { get; set; }
+    public Guid Id { get; set; }
 }
