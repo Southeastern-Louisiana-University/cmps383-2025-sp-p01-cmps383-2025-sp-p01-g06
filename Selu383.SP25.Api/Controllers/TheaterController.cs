@@ -15,28 +15,6 @@ namespace Selu383.SP25.Api.Controllers
             _context = context;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateTheaterDto createDTO)
-        {
-            if (createDTO.SeatCount < 1)
-            {
-                return BadRequest(new { error = "Theatre must have at least 1 seat." });
-            }
-
-            Theater newTheater = new Theater
-            {
-                Name = createDTO.Name,
-                Address = createDTO.Address,
-                SeatCount = createDTO.SeatCount,
-            };
-
-            _context.Add(newTheater);
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(Create), new { id = newTheater.Id }, newTheater);
-        }
-
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(Guid id, UpdateTheaterDto updateDTO)
         {
@@ -126,5 +104,7 @@ namespace Selu383.SP25.Api.Controllers
 
             return Ok(theater);
         }
+
+        
     }
 }
