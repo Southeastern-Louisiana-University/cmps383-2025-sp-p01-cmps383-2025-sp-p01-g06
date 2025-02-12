@@ -36,5 +36,45 @@ namespace Selu383.SP25.Api.Controllers
 
             return CreatedAtAction(nameof(Create), new { id = newTheater.Id }, newTheater);
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(Guid id, UpdateTheaterDto updateDTO)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Theater theater = await _context.Theaters.FindAsync(id);
+
+            if (theater == null)
+            {
+                return NotFound();
+            }
+
+            if (string.IsNullOrWhiteSpace(updateDTO.Name))
+            {
+                return BadRequest("Theater name is required.");
+            }
+
+            if (updateDTO.Name.Length > 120)
+            {
+                return BadRequest("Theater name must be 120 characters or less.");
+            }
+
+            if (string.IsNullOrWhiteSpace(updateDTO.Address))
+            {
+                return BadRequest("Address is required.");
+            }
+
+            
+            theater.Name = updateDTO.Name;
+            theater.Address = updateDTO.Address;
+            theater.SeatCount = updateDTO.SeatCount;
+
+            await _context.SaveChangesAsync();
+
+            return Ok(theater);
+        }
     }
 }

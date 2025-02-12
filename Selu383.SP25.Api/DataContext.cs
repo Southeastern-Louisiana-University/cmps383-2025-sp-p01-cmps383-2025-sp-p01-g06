@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Selu383.SP25.Api.Entities;
+using Selu383.SP25.Api.Config;
 
 namespace Selu383.SP25.Api
 {
