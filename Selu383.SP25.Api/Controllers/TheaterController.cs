@@ -74,7 +74,7 @@ namespace Selu383.SP25.Api.Controllers
 
             await _context.SaveChangesAsync();
 
-            return Ok(theater);
+            return Ok(new { Theater = theater, Message = "Theater updated successfully!" });
         }
     }
 }
