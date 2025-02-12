@@ -1,5 +1,9 @@
 ﻿using System.Linq;
+using System.Net;
+using Azure;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Selu383.SP25.Api.Entities;
 
 namespace Selu383.SP25.Api.Controllers
@@ -13,6 +17,23 @@ namespace Selu383.SP25.Api.Controllers
         public TheaterController(DataContext context)
         {
             _context = context;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ListAllTheaters()
+        {
+            var theaters = await _context.Theaters
+                .Select(getDto => new GetTheaterDto
+                {
+                    Id = new Guid(),
+                    Name = getDto.Name,
+                    Address = getDto.Address,
+                    SeatCount = getDto.SeatCount,
+
+                })
+                .ToListAsync();
+
+            return Ok(theaters);
         }
 
         [HttpPost]
