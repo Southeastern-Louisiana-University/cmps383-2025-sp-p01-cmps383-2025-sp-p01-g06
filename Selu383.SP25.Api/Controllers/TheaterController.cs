@@ -34,7 +34,20 @@ namespace Selu383.SP25.Api.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(Create), new { id = newTheater.Id }, newTheater);
+            return CreatedAtAction(nameof(GetTheaterById), new { id = newTheater.Id }, newTheater);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTheaterById(int id)
+        {
+            var theater = await _context.Theaters.FindAsync(id);
+
+            if (theater == null)
+            {
+                return NotFound(new { error = "Theater not found." });
+            }
+
+            return Ok(theater);
         }
     }
 }
