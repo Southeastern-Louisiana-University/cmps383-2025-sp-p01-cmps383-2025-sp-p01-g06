@@ -8,7 +8,9 @@
 *.sln.docstates
 *ncrunch* 
 *.orig
-.env
+
+#Environments
+*.env
 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
