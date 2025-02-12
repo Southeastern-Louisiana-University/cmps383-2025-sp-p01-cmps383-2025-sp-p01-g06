@@ -23,13 +23,12 @@ namespace Selu383.SP25.Api.Controllers
         public async Task<IActionResult> ListAllTheaters()
         {
             var theaters = await _context.Theaters
-                .Select(getDto => new GetTheaterDto
+                .Select(theater => new GetTheaterDto
                 {
-                    Id = new Guid(),
-                    Name = getDto.Name,
-                    Address = getDto.Address,
-                    SeatCount = getDto.SeatCount,
-
+                    Id = theater.Id,  
+                    Name = theater.Name,
+                    Address = theater.Address,
+                    SeatCount = theater.SeatCount,
                 })
                 .ToListAsync();
 
@@ -111,28 +110,6 @@ namespace Selu383.SP25.Api.Controllers
             await _context.SaveChangesAsync();
 
             return Ok();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(CreateTheaterDto createDTO)
-        {
-            if (createDTO.SeatCount < 1)
-            {
-                return BadRequest(new { error = "Theatre must have at least 1 seat." });
-            }
-
-            Theater newTheater = new Theater
-            {
-                Name = createDTO.Name,
-                Address = createDTO.Address,
-                SeatCount = createDTO.SeatCount,
-            };
-
-            _context.Add(newTheater);
-
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetTheaterById), new { id = newTheater.Id }, newTheater);
         }
 
         [HttpGet("{id}")]
