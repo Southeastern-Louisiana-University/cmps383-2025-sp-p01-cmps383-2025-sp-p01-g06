@@ -88,7 +88,6 @@ namespace Selu383.SP25.Api.Controllers
                 return BadRequest("Address is required.");
             }
 
-            
             theater.Name = updateDTO.Name;
             theater.Address = updateDTO.Address;
             theater.SeatCount = updateDTO.SeatCount;
@@ -96,6 +95,57 @@ namespace Selu383.SP25.Api.Controllers
             await _context.SaveChangesAsync();
 
             return Ok(new { Theater = theater, Message = "Theater updated successfully!" });
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var theater = await _context.Theaters.FindAsync(id);
+
+            if (theater == null)
+            {
+                return NotFound();
+            }
+
+            _context.Theaters.Remove(theater);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(CreateTheaterDto createDTO)
+        {
+            if (createDTO.SeatCount < 1)
+            {
+                return BadRequest(new { error = "Theatre must have at least 1 seat." });
+            }
+
+            Theater newTheater = new Theater
+            {
+                Name = createDTO.Name,
+                Address = createDTO.Address,
+                SeatCount = createDTO.SeatCount,
+            };
+
+            _context.Add(newTheater);
+
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetTheaterById), new { id = newTheater.Id }, newTheater);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetTheaterById(int id)
+        {
+            var theater = await _context.Theaters.FindAsync(id);
+
+            if (theater == null)
+            {
+                return NotFound(new { error = "Theater not found." });
+            }
+
+            return Ok(theater);
         }
     }
 }

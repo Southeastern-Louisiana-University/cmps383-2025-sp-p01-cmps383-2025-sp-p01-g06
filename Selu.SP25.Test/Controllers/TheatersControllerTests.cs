@@ -136,12 +136,33 @@ public class TheatersControllerTests
         var httpResponse = await webClient.PostAsJsonAsync("/api/theaters", request);
 
         //assert
-        httpResponse
-            .StatusCode.Should()
-            .Be(
-                HttpStatusCode.BadRequest,
-                "we expect an HTTP 400 when calling POST /api/theaters with no description"
-            );
+        httpResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest, "we expect an HTTP 400 when calling POST /api/theaters with no address");
+    }
+
+
+    [TestMethod]
+    public async Task CreateTheater_NoSeats_ReturnsError()
+    {
+        //arrange
+        var webClient = context.GetStandardWebClient();
+        var target = await webClient.GetTheater();
+        if (target == null)
+        {
+            Assert.Fail("You are not ready for this test");
+            return;
+        }
+        var request = new TheaterDto
+        {
+            Name = "asd",
+            Address = "fdsa",
+            SeatCount = 0
+        };
+
+        //act
+        var httpResponse = await webClient.PostAsJsonAsync("/api/theaters", request);
+
+        //assert
+        httpResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest, "we expect an HTTP 400 when calling POST /api/theaters with no seats");
     }
 
     [TestMethod]
@@ -149,7 +170,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Name = "a", Address = "asd" };
+        var request = new TheaterDto
+        {
+            Name = "a",
+            Address = "asd",
+            SeatCount = 1
+        };
 
         //act
         var httpResponse = await webClient.PostAsJsonAsync("/api/theaters", request);
@@ -163,7 +189,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Name = "a", Address = "desc" };
+        var request = new TheaterDto
+        {
+            Name = "a",
+            Address = "desc",
+            SeatCount = 1
+        };
         await using var target = await webClient.CreateTheater(request);
         if (target == null)
         {
@@ -189,7 +220,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Name = "a", Address = "desc" };
+        var request = new TheaterDto
+        {
+            Name = "a",
+            Address = "desc",
+            SeatCount = 1
+        };
         await using var target = await webClient.CreateTheater(request);
         if (target == null)
         {
@@ -215,7 +251,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Name = "a", Address = "desc" };
+        var request = new TheaterDto
+        {
+            Name = "a",
+            Address = "desc",
+            SeatCount = 1
+        };
         await using var target = await webClient.CreateTheater(request);
         if (target == null)
         {
@@ -241,7 +282,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Name = "a", Address = "desc" };
+        var request = new TheaterDto
+        {
+            Name = "a",
+            Address = "desc",
+            SeatCount = 1
+        };
         await using var target = await webClient.CreateTheater(request);
         if (target == null)
         {
@@ -262,7 +308,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Address = "asd", Name = "asd" };
+        var request = new TheaterDto
+        {
+            Address = "asd",
+            Name = "asd",
+            SeatCount = 1
+        };
         await using var itemHandle = await webClient.CreateTheater(request);
         if (itemHandle == null)
         {
@@ -287,7 +338,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Address = "asd", Name = "asd" };
+        var request = new TheaterDto
+        {
+            Address = "asd",
+            Name = "asd",
+            SeatCount = 1
+        };
         await using var itemHandle = await webClient.CreateTheater(request);
         if (itemHandle == null)
         {
@@ -312,7 +368,12 @@ public class TheatersControllerTests
     {
         //arrange
         var webClient = context.GetStandardWebClient();
-        var request = new TheaterDto { Address = "asd", Name = "asd" };
+        var request = new TheaterDto
+        {
+            Address = "asd",
+            Name = "asd",
+            SeatCount = 1
+        };
         await using var itemHandle = await webClient.CreateTheater(request);
         if (itemHandle == null)
         {
