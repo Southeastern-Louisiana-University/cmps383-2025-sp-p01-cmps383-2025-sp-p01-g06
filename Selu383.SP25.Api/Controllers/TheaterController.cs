@@ -76,5 +76,21 @@ namespace Selu383.SP25.Api.Controllers
 
             return Ok(theater);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            var theater = await _context.Theaters.FindAsync(id);
+
+            if (theater == null)
+            {
+                return NotFound();
+            }
+
+            _context.Theaters.Remove(theater);
+            await _context.SaveChangesAsync();
+
+            return Ok();
+        }
     }
 }
