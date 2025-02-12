@@ -1,16 +1,16 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.EntityFrameworkCore;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Selu383.SP25.Api.Entities
 {
     public class Theater
     {
-       public int Id { get; set; }
-        
-       public required string Name { get; set; }
-       [Range(1, int.MaxValue, ErrorMessage = "Seat count must be at least 1.")]
+        public int Id { get; set; }
+
+        [MaxLength(120)]
+        public required string Name { get; set; }
         public int SeatCount { get; set; }
-       public required string Address { get; set; }
+        public required string Address { get; set; }
     }
 }
 
@@ -23,7 +23,7 @@ public class CreateTheaterDto
 
 public class GetTheaterDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public int SeatCount { get; set; }
     public required string Address { get; set; }
@@ -31,7 +31,7 @@ public class GetTheaterDto
 
 public class GetTheaterByIdDto
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
     public required string Name { get; set; }
     public int SeatCount { get; set; }
     public required string Address { get; set; }
@@ -42,11 +42,9 @@ public class UpdateTheaterDto
     public required string Name { get; set; }
     public int SeatCount { get; set; }
     public required string Address { get; set; }
-}   
+}
 
 public class DeleteTheaterDto
 {
-    public int Id { get; set; }
+    public GuidConverter Id { get; set; }
 }
-
-

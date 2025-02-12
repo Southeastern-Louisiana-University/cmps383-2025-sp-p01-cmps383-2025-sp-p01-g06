@@ -1,3 +1,5 @@
+using DotNetEnv;
+using Microsoft.EntityFrameworkCore;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -7,18 +9,13 @@ namespace Selu383.SP25.Api
     {
         public static void Main(string[] args)
         {
+            Env.Load();
             var builder = WebApplication.CreateBuilder(args);
-
-            // Load User Secrests with the connection string
-            if (builder.Environment.IsDevelopment())
-            {
-                builder.Configuration.AddUserSecrets<Program>();
-            }
-
-            // Add services to the container. Register the DataContext with the connection string
+            var connectionString = Env.GetString("CONNECTION_STRING");
+            // Add services to the container.
             builder.Services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(builder.Configuration.GetConnectionString("DataContext"));
+                options.UseSqlServer(connectionString);
             });
 
             builder.Services.AddControllers();
@@ -36,7 +33,6 @@ namespace Selu383.SP25.Api
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 
