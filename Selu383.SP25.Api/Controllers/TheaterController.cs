@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Selu383.SP25.Api.Entities;
 
 namespace Selu383.SP25.Api.Controllers
@@ -105,6 +106,25 @@ namespace Selu383.SP25.Api.Controllers
             return Ok(theater);
         }
 
-        
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Theater>>> GetAllTheaters()
+        {
+            var theaters = await _context
+                .Theaters.Select(t => new GetTheaterDto
+                {
+                    Id = t.Id,
+                    Name = t.Name,
+                    Address = t.Address,
+                    SeatCount = t.SeatCount,
+                })
+                .ToListAsync();
+
+            if (!theaters.Any())
+            {
+                return NoContent();
+            }
+
+            return Ok(theaters);
+        }
     }
 }
