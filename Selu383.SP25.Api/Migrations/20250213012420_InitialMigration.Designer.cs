@@ -11,8 +11,8 @@ using Selu383.SP25.Api;
 namespace Selu383.SP25.Api.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250208034613_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250213012420_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

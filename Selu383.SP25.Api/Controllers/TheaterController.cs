@@ -17,7 +17,7 @@ namespace Selu383.SP25.Api.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> Update(Guid id, UpdateTheaterDto updateDTO)
+        public async Task<IActionResult> Update(int id, UpdateTheaterDto updateDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -28,35 +28,46 @@ namespace Selu383.SP25.Api.Controllers
 
             if (theater == null)
             {
-                return NotFound();
+                return NotFound(new { error = "Theater not found." });
             }
 
             if (string.IsNullOrWhiteSpace(updateDTO.Name))
             {
-                return BadRequest("Theater name is required.");
+                return BadRequest(new { error = "Theater name is required." });
             }
 
             if (updateDTO.Name.Length > 120)
             {
-                return BadRequest("Theater name must be 120 characters or less.");
+                return BadRequest(new { error = "Theater name must be 120 characters or less." });
             }
 
             if (string.IsNullOrWhiteSpace(updateDTO.Address))
             {
-                return BadRequest("Address is required.");
+                return BadRequest(new { error = "Address is required." });
             }
 
+            // Update the entity with new values
             theater.Name = updateDTO.Name;
             theater.Address = updateDTO.Address;
             theater.SeatCount = updateDTO.SeatCount;
 
             await _context.SaveChangesAsync();
 
-            return Ok(new { Theater = theater, Message = "Theater updated successfully!" });
+            // 🔹 Convert updated entity to DTO
+            var updatedTheaterDto = new GetTheaterDto
+            {
+                Id = theater.Id,
+                Name = theater.Name,
+                Address = theater.Address,
+                SeatCount = theater.SeatCount
+            };
+
+            return Ok(updatedTheaterDto); // 🔹 Return DTO instead of empty response
         }
 
+
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(int id)
         {
             var theater = await _context.Theaters.FindAsync(id);
 
@@ -103,8 +114,18 @@ namespace Selu383.SP25.Api.Controllers
                 return NotFound(new { error = "Theater not found." });
             }
 
-            return Ok(theater);
+            // Convert entity to DTO
+            var theaterDto = new GetTheaterByIdDto
+            {
+                Id = theater.Id,
+                Name = theater.Name,
+                SeatCount = theater.SeatCount,
+                Address = theater.Address
+            };
+
+            return Ok(theaterDto);
         }
+
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Theater>>> GetAllTheaters()
@@ -119,10 +140,7 @@ namespace Selu383.SP25.Api.Controllers
                 })
                 .ToListAsync();
 
-            if (!theaters.Any())
-            {
-                return NoContent();
-            }
+           
 
             return Ok(theaters);
         }
